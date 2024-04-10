@@ -2,7 +2,6 @@
 
 from sqlalchemy import inspect
 import pandas as pd
-import numpy as np
 from math import sqrt
 
 class CSVfile():
