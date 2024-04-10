@@ -1,5 +1,3 @@
-
-
 from sqlalchemy import inspect
 import pandas as pd
 from math import sqrt
@@ -84,7 +82,7 @@ class CSVfile():
 
 
     def save_to_db(self, conn, table_name):
-        """if no such table it save, unless run exception
+        """saves file to database, if no such table it save, unless run exception
         check if the table to save id for right type of file"""
 
         match self.type:
@@ -141,11 +139,13 @@ class Function():
 
 class IdealFunction(Function):
     def __init__(self, conn, name):
+        '''creates ideal function from db as name and data frame'''
         super().__init__(name)
         self.data_frame = pd.read_sql(sql=(f"SELECT x, {name} FROM ideal_functions"),con=conn)        
 
 class TrainFunction(Function):
     def __init__(self, conn, name):
+        '''creates train function from db as name and data frame'''
         super().__init__(name)
         self.data_frame = pd.read_sql(sql=(f"SELECT x, {name} FROM train_functions"),con=conn)
 
@@ -155,15 +155,13 @@ class TrainFunction(Function):
         inspector = inspect(conn)
         funcs = inspector.get_columns(table_name)
 
-        bestMatch = funcs[1]['name'] #First value is x, so we assign first function
-        bestMatchFunction = IdealFunction(conn, funcs[1]['name'])
+        bestMatchFunction = IdealFunction(conn, funcs[1]['name']) #First value is x, so we assign first function
         minimalSum_deviation, max_deviation = bestMatchFunction.count_deviation(self)
 
         for j in range(1 , len(funcs)):
             idealFunction = IdealFunction(conn, funcs[j]['name'])
             sum_deviation, maxFuncDeviation = idealFunction.count_deviation(self)
             if (sum_deviation < minimalSum_deviation):
-                bestMatch = funcs[j]['name']
                 minimalSum_deviation = sum_deviation
                 bestMatchFunction = idealFunction
                 bestMatchFunction.max_deviation = maxFuncDeviation

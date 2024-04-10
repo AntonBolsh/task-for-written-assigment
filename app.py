@@ -3,12 +3,15 @@ from sqlalchemy_utils import database_exists, create_database
 from classes import CSVfile, TrainFunction
 
 if __name__ == "__main__":
-    
+
+    #connect to database
     engine = create_engine("sqlite:///./data/function_data.db", echo=True, future=True)
     if not database_exists(engine.url):
         create_database(engine.url)
 
     conn = engine.connect()
+
+    #read csv files
             
     ideal_csv = CSVfile("ideal.csv", "ideal_functions", 1)
 
@@ -20,6 +23,8 @@ if __name__ == "__main__":
 
     train_functions = []
     ideal_functions = []
+
+    #Match all test data string by sting
 
     for i in range (1,4):
         func_name = "y"+str(i)

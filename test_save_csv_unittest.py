@@ -8,6 +8,7 @@ import pandas as pd
 class TestSum(unittest.TestCase):
 
     def test_ideal_save(self):
+        '''Checks if save dataframe and written are the same'''
 
         engine = create_engine("sqlite:///./data/test_function_data.db", echo=True, future=True)
         if not database_exists(engine.url):
