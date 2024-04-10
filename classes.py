@@ -117,11 +117,9 @@ class CSVfile():
                 dev = sqrt(pow((row['y'] - yRow[ideal_function.name].values),2))
                 maxDev = sqrt(ideal_function.max_deviation)
                 if (dev < maxDev*sqrt(2)):
-                    print(f"MATCH MATCH {index}")
                     self.data_frame._set_value(index,'delta_Y', dev)
                     self.data_frame._set_value(index,'No_of_ideal_func', ideal_function.name)
         
-        print(self.data_frame)
         self.data_frame.to_sql(name=table_name, con=conn, if_exists='replace', index=False)
 
 class Function():
@@ -170,8 +168,4 @@ class TrainFunction(Function):
                 minimalSum_deviation = sum_deviation
                 bestMatchFunction = idealFunction
                 bestMatchFunction.max_deviation = maxFuncDeviation
-            print(f'{idealFunction.name}, {sum_deviation}')
-
-        print(f'best match is {bestMatch}, max deviation is {bestMatchFunction.max_deviation}')
-
         return bestMatchFunction
